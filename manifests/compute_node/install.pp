@@ -20,6 +20,10 @@
 class one::compute_node::install(
   $node_packages = $one::node_packages
 ) {
+  class { 'sudo':
+    purge               => false,
+    config_file_replace => false,
+  }
   package { $node_packages:
       ensure => latest,
   }
