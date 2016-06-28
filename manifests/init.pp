@@ -464,6 +464,10 @@ class one (
     $version_gte_5_0 = false
   }
 
+  # for some things we only need X.Y not X.Y.Z so trim off any extra points
+  $one_version_array = split($one_version,"[.]")
+  $one_version_short = "${one_version_array[0]}.${one_version_array[1]}"
+
   include one::prerequisites
   include one::install
   include one::config
