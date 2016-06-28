@@ -456,6 +456,14 @@ class one (
     $version_gte_4_14 = false
   }
 
+  # check if version greater than or equal to 5.0 (used in templates)
+  if ( versioncmp($one_version, '5.0') >= 0 ) {
+    $version_gte_5_0 = true
+  }
+  else {
+    $version_gte_5_0 = false
+  }
+
   include one::prerequisites
   include one::install
   include one::config
