@@ -21,6 +21,7 @@
 #
 class one::params {
   # OpenNebula parameters
+  $oned_log_system  = hiera('one::oned::oned_log_system', 'file')
   $oned_port        = hiera('one::oned::port', '2633')
   $oned_listen_address = hiera('one::oned_listen_address', '0.0.0.0')
   $oned_db          = hiera('one::oned::db', 'oned')
@@ -207,11 +208,13 @@ class one::params {
     'RedHat': {
       if $::operatingsystemmajrelease == '7' {
         $node_packages = [
+          'device-mapper-libs',
           'opennebula-node-kvm',
           'ipset',
         ]
       } else {
         $node_packages = [
+          'device-mapper-libs',
           'opennebula-node-kvm',
           'python-virtinst',
           'ipset',
