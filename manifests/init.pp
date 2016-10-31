@@ -479,7 +479,12 @@ class one (
     $template_path = $templated_versions_mapping[$one_version_short]
   }
   else {
-    $template_path = 'unversioned'
+    if $version_gte_5_0 {
+      fail("One_version ${one_version} not in templated_versions_mapping. Compare templates for this new version and add to puppet module.")
+    }
+    else {
+      $template_path = 'unversioned'
+    }
   }
 
   include one::prerequisites
