@@ -565,7 +565,7 @@ class one (
   # package version parsing
   if ($package_ensure_latest) {
     if ($ha_setup) {
-      warn('using $::one::package_ensure_latest = true with ha_setup = true is risky - can lead to oned service stopping if rpm updated')
+      warning('using $::one::package_ensure_latest = true with ha_setup = true is risky - can lead to oned service stopping if rpm updated')
     }
     $package_ensure = 'latest'
   } else {
