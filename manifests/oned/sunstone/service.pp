@@ -22,6 +22,9 @@ class one::oned::sunstone::service (
   if $sunstone_passenger {
     $srv_ensure = stopped
     $srv_enable = false
+  } elsif ($ha_setup) {
+    $srv_ensure = undef
+    $srv_enable = false
   } else {
     $srv_ensure = running
     $srv_enable = true
