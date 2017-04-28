@@ -16,8 +16,9 @@
 #
 class one::oned::sunstone::service (
   $sunstone_passenger = $one::sunstone_passenger,
-  $sunstone_novnc     = $one::sunstone_novnc
-) {
+  $sunstone_novnc     = $one::sunstone_novnc,
+  $ha_setup           = $one::ha_setup,
+){
   if $sunstone_passenger {
     $srv_ensure = stopped
     $srv_enable = false
@@ -25,17 +26,26 @@ class one::oned::sunstone::service (
     $srv_ensure = running
     $srv_enable = true
   }
-  $_sunstone_novnc_ensure = $sunstone_novnc ? {
-    true    => running,
-    default => stopped,
-  }
+
   service { 'opennebula-sunstone':
     ensure  => $srv_ensure,
     enable  => $srv_enable,
     require => Service['opennebula'],
   }
+
+  if ($ha_setup) {
+    $_sunstone_novnc_enable = false
+    $_sunstone_novnc_ensure = undef
+  } else {
+    $_sunstone_novnc_enable = $sunstone_novnc
+    $_sunstone_novnc_ensure = $sunstone_novnc ? {
+      true    => running,
+      default => stopped,
+    }
+  }
+
   service { 'opennebula-novnc':
     ensure => $_sunstone_novnc_ensure,
-    enable => $sunstone_novnc,
+    enable => $_sunstone_novnc_enable,
   }
 }
