@@ -36,6 +36,11 @@ describe provider_class do
         skip('needs test to verify removal')
       end
   end
+  context 'when deleting with purge_vnets => false' do
+      it 'should not run onevnet delete <name>' do
+        skip('needs test to verify does not remove extraneous vnets')
+      end
+  end
   context 'when updating' do
       skip('update needs all tests')
   end
