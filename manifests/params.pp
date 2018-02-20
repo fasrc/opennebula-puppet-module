@@ -190,6 +190,18 @@ class one::params {
   $default_device_prefix       = hiera ('one::oned::default_device_prefix', 'hd')
   $default_cdrom_device_prefix = hiera ('one::oned::default_cdrom_device_prefix', 'hd')
 
+  # OpenNebula Federation parameters
+  $federation_mode             = hiera ('one::oned::federation_mode', 'standalone' )
+  $federation_zone_id          = hiera ('one::oned::federation_zone_id', 0 )
+  $federation_server_id        = hiera ('one::oned::federation_server_id', -1 )
+  $federation_master_uri       = hiera ('one::oned::federation_master_uri', undef)
+
+  # OpenNebula Raft parameters
+  $raft_election_timeout       = hiera ('one::oned::raft_election_timeout', 2500 )
+  $raft_xmlrpc_timeout         = hiera ('one::oned::raft_xmlrpc_timeout', 2000 )
+  $raft_leader_hook            = hiera ('one::oned::raft_leader_hook', undef )
+  $raft_follower_hook          = hiera ('one::oned::raft_follower_hook', undef )
+
   # Where to place the sudo rule files
   $oneadmin_sudoers_file   = '/etc/sudoers.d/10_oneadmin'
   $imaginator_sudoers_file = '/etc/sudoers.d/20_imaginator'

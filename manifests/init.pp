@@ -469,6 +469,14 @@ class one (
   $default_device_prefix          = $one::params::default_device_prefix,
   $default_cdrom_device_prefix    = $one::params::default_cdrom_device_prefix,
   $one_version                    = $one::params::one_version,
+  $federation_mode                = $one::params::federation_mode,
+  $federation_zone_id             = $one::params::federation_zone_id,
+  $federation_server_id           = $one::params::federation_server_id,
+  $federation_master_uri          = $one::params::federation_master_uri,
+  $raft_election_timeout          = $one::params::raft_election_timeout,
+  $raft_xmlrpc_timeout            = $one::params::raft_xmlrpc_timeout,
+  $raft_leader_hook               = $one::params::raft_leader_hook,
+  $raft_follower_hook             = $one::params::raft_follower_hook,
 ) inherits one::params {
 
   # Data Validation

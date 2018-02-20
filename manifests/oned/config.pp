@@ -56,6 +56,14 @@ class one::oned::config(
   $default_image_type          = $one::default_image_type,
   $default_device_prefix       = $one::default_device_prefix,
   $default_cdrom_device_prefix = $one::default_cdrom_device_prefix,
+  $federation_mode             = $one::federation_mode,
+  $federation_zone_id          = $one::federation_zone_id,
+  $federation_server_id        = $one::federation_server_id,
+  $federation_master_uri       = $one::federation_master_uri,
+  $raft_election_timeout       = $one::raft_election_timeout,
+  $raft_xmlrpc_timeout         = $one::raft_xmlrpc_timeout,
+  $raft_leader_hook            = $one::raft_leader_hook,
+  $raft_follower_hook          = $one::raft_follower_hook,
 ) {
 
   if ! member(['YES', 'NO'], $oned_vm_submit_on_hold) {
@@ -91,6 +99,8 @@ class one::oned::config(
   if ! is_integer($sched_log_debug_level) {
     fail("sched_log_debug_level must be of type integer. Actual value: ${sched_log_debug_level}" )
   }
+
+  $federation_mode_upper = upcase($federation_mode)
 
   File {
     owner  => 'oneadmin',
