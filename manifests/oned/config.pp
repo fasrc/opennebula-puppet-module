@@ -62,8 +62,8 @@ class one::oned::config(
   $federation_master_uri       = $one::federation_master_uri,
   $raft_election_timeout       = $one::raft_election_timeout,
   $raft_xmlrpc_timeout         = $one::raft_xmlrpc_timeout,
-  $raft_leader_hook            = $one::raft_leader_hook,
-  $raft_follower_hook          = $one::raft_follower_hook,
+  $raft_leader_hook            = $one::raft_leader_hook_script,
+  $raft_follower_hook          = $one::raft_follower_hook_script,
 ) {
 
   if ! member(['YES', 'NO'], $oned_vm_submit_on_hold) {

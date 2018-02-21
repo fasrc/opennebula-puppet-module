@@ -199,8 +199,6 @@ class one::params {
   # OpenNebula Raft parameters
   $raft_election_timeout       = hiera ('one::oned::raft_election_timeout', 2500 )
   $raft_xmlrpc_timeout         = hiera ('one::oned::raft_xmlrpc_timeout', 2000 )
-  $raft_leader_hook            = hiera ('one::oned::raft_leader_hook', undef )
-  $raft_follower_hook          = hiera ('one::oned::raft_follower_hook', undef )
 
   # Where to place the sudo rule files
   $oneadmin_sudoers_file   = '/etc/sudoers.d/10_oneadmin'

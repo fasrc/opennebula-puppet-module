@@ -475,8 +475,6 @@ class one (
   $federation_master_uri          = $one::params::federation_master_uri,
   $raft_election_timeout          = $one::params::raft_election_timeout,
   $raft_xmlrpc_timeout            = $one::params::raft_xmlrpc_timeout,
-  $raft_leader_hook               = $one::params::raft_leader_hook,
-  $raft_follower_hook             = $one::params::raft_follower_hook,
 ) inherits one::params {
 
   # Data Validation
@@ -520,6 +518,16 @@ class one (
     $host_hook_scripts = $hook_scripts['HOST'] # lint:ignore:variable_contains_upcase
     if ($host_hook_scripts) {
       validate_hash($host_hook_scripts)
+    }
+
+    $raft_leader_hook_script = $hook_script['RAFT_LEADER']
+    if ($raft_leader_hook_script) {
+      validate_hash($raft_leader_hook_script)
+    }
+
+    $raft_follower_hook_script = $hook_script['RAFT_FOLLOWER'] # lint:ignore:variable_contains_upcase
+    if ($raft_follower_hook_script) {
+      validate_hash($raft_follower_hook_script)
     }
   }
 
