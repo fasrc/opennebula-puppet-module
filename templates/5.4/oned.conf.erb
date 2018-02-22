@@ -179,16 +179,16 @@ RAFT = [
 
 <%- if @raft_leader_hook != nil -%>
 RAFT_LEADER_HOOK = [
-    COMMAND = "<%= @raft_leader_hook['command'] %>"
+    COMMAND = "<%= @raft_leader_hook['command'] %>",
     ARGUMENTS = "<%= @raft_leader_hook['arguments'] %>"
 ]
 <% end -%>
 
 <%- if @raft_follower_hook != nil -%>
 RAFT_FOLLOWER_HOOK = [
-    COMMAND = "<%= @raft_follower_hook['command'] %>"
+    COMMAND = "<%= @raft_follower_hook['command'] %>",
     ARGUMENTS = "<%= @raft_follower_hook['arguments'] %>"
-}
+]
 <% end -%>
 
 

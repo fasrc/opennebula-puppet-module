@@ -520,12 +520,12 @@ class one (
       validate_hash($host_hook_scripts)
     }
 
-    $raft_leader_hook_script = $hook_script['RAFT_LEADER']
+    $raft_leader_hook_script = $hook_scripts['RAFT_LEADER']
     if ($raft_leader_hook_script) {
       validate_hash($raft_leader_hook_script)
     }
 
-    $raft_follower_hook_script = $hook_script['RAFT_FOLLOWER'] # lint:ignore:variable_contains_upcase
+    $raft_follower_hook_script = $hook_scripts['RAFT_FOLLOWER'] # lint:ignore:variable_contains_upcase
     if ($raft_follower_hook_script) {
       validate_hash($raft_follower_hook_script)
     }
