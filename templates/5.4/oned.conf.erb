@@ -151,18 +151,18 @@ VM_SUBMIT_ON_HOLD = "<%= scope.lookupvar('one::oned::config::oned_vm_submit_on_h
 #*******************************************************************************
 
 FEDERATION = [
-    MODE          = "STANDALONE",
-    ZONE_ID       = 0,
-    SERVER_ID     = -1,
-    MASTER_ONED   = ""
+    MODE          = "<%= @federation_mode_upper %>",
+    ZONE_ID       = <%= @federation_zone_id %>,
+    SERVER_ID     = <%= @federation_server_id %>,
+    MASTER_ONED   = "<%= @federation_master_uri %>"
 ]
 
 RAFT = [
     LOG_RETENTION        = 500000,
     LOG_PURGE_TIMEOUT    = 600,
-    ELECTION_TIMEOUT_MS  = 2500,
+    ELECTION_TIMEOUT_MS  = <%= @raft_election_timeout %>,
     BROADCAST_TIMEOUT_MS = 500,
-    XMLRPC_TIMEOUT_MS    = 2000
+    XMLRPC_TIMEOUT_MS    = <%= @raft_xmlrpc_timeout %>
 ]
 
 # Executed when a server transits from follower->leader
@@ -176,6 +176,21 @@ RAFT = [
 #     COMMAND = "raft/vip.sh",
 #     ARGUMENTS = "follower <interface> <ip_cidr>"
 # ]
+
+<%- if @raft_leader_hook != nil -%>
+RAFT_LEADER_HOOK = [
+    COMMAND = "<%= @raft_leader_hook['command'] %>",
+    ARGUMENTS = "<%= @raft_leader_hook['arguments'] %>"
+]
+<% end -%>
+
+<%- if @raft_follower_hook != nil -%>
+RAFT_FOLLOWER_HOOK = [
+    COMMAND = "<%= @raft_follower_hook['command'] %>",
+    ARGUMENTS = "<%= @raft_follower_hook['arguments'] %>"
+]
+<% end -%>
+
 
 #*******************************************************************************
 # Default showback cost

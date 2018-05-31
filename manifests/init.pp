@@ -469,6 +469,12 @@ class one (
   $default_device_prefix          = $one::params::default_device_prefix,
   $default_cdrom_device_prefix    = $one::params::default_cdrom_device_prefix,
   $one_version                    = $one::params::one_version,
+  $federation_mode                = $one::params::federation_mode,
+  $federation_zone_id             = $one::params::federation_zone_id,
+  $federation_server_id           = $one::params::federation_server_id,
+  $federation_master_uri          = $one::params::federation_master_uri,
+  $raft_election_timeout          = $one::params::raft_election_timeout,
+  $raft_xmlrpc_timeout            = $one::params::raft_xmlrpc_timeout,
 ) inherits one::params {
 
   # Data Validation
@@ -512,6 +518,16 @@ class one (
     $host_hook_scripts = $hook_scripts['HOST'] # lint:ignore:variable_contains_upcase
     if ($host_hook_scripts) {
       validate_hash($host_hook_scripts)
+    }
+
+    $raft_leader_hook_script = $hook_scripts['RAFT_LEADER']
+    if ($raft_leader_hook_script) {
+      validate_hash($raft_leader_hook_script)
+    }
+
+    $raft_follower_hook_script = $hook_scripts['RAFT_FOLLOWER'] # lint:ignore:variable_contains_upcase
+    if ($raft_follower_hook_script) {
+      validate_hash($raft_follower_hook_script)
     }
   }
 
