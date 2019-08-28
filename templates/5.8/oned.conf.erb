@@ -574,10 +574,34 @@ VM_MAD = [
     KEEP_SNAPSHOTS = "no",
     IMPORTED_VMS_ACTIONS = "terminate, terminate-hard, hold, release, suspend,
         resume, delete, reboot, reboot-hard, resched, unresched, disk-attach,
-        disk-detach, nic-attach, nic-detach, snap-create, snap-delete"
+        disk-detach, nic-attach, nic-detach, snapshot-create, snapshot-delete"
 ]
 
 #-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#  LXD Virtualization Driver Manager Configuration
+#    -r number of retries when monitoring a host
+#    -t number of threads, i.e. number of hosts monitored at the same time
+#    -l <actions[=command_name]> actions executed locally, command can be
+#        overridden for each action.
+#        Valid actions: deploy, shutdown, cancel, save, restore, migrate, poll
+#        An example: "-l migrate=migrate_local,save"
+#    -p more than one action per host in parallel, needs support from hypervisor
+#    -s <shell> to execute remote commands, bash by default
+#    -w Timeout in seconds to execute external commands (default unlimited)
+#
+#-------------------------------------------------------------------------------
+VM_MAD = [
+    NAME           = "lxd",
+    SUNSTONE_NAME  = "LXD",
+    EXECUTABLE     = "one_vmm_exec",
+    ARGUMENTS      = "-t 15 -r 0 lxd",
+    # DEFAULT        = "vmm_exec/vmm_exec_lxd.conf",
+    TYPE           = "xml",
+    KEEP_SNAPSHOTS = "no",
+    IMPORTED_VMS_ACTIONS = "terminate, terminate-hard, reboot, reboot-hard, poweroff, poweroff-hard, suspend, resume, stop, delete,  nic-attach, nic-detach"
+]
 
 #-------------------------------------------------------------------------------
 #  vCenter Virtualization Driver Manager Configuration
@@ -590,17 +614,18 @@ VM_MAD = [
 #    -w Timeout in seconds to execute external commands (default unlimited)
 #-------------------------------------------------------------------------------
 #VM_MAD = [
-#    NAME           = "vcenter",
-#    SUNSTONE_NAME  = "VMWare vCenter",
-#    EXECUTABLE     = "one_vmm_sh",
-#    ARGUMENTS      = "-p -t 15 -r 0 vcenter -s sh",
-#    DEFAULT        = "vmm_exec/vmm_exec_vcenter.conf",
-#    TYPE           = "xml",
-#    KEEP_SNAPSHOTS = "yes",
+#    NAME              = "vcenter",
+#    SUNSTONE_NAME     = "VMWare vCenter",
+#    EXECUTABLE        = "one_vmm_sh",
+#    ARGUMENTS         = "-p -t 15 -r 0 vcenter -s sh",
+#    DEFAULT           = "vmm_exec/vmm_exec_vcenter.conf",
+#    TYPE              = "xml",
+#    KEEP_SNAPSHOTS    = "yes",
+#    DS_LIVE_MIGRATION = "yes",
 #    IMPORTED_VMS_ACTIONS = "terminate, terminate-hard, hold, release, suspend,
 #        resume, delete, reboot, reboot-hard, resched, unresched, poweroff,
 #        poweroff-hard, disk-attach, disk-detach, nic-attach, nic-detach,
-#        snap-create, snap-delete"
+#        snapshot-create, snapshot-delete, migrate, live-migrate"
 #]
 #-------------------------------------------------------------------------------
 
@@ -643,6 +668,24 @@ VM_MAD = [
 #        poweroff-hard, disk-attach, disk-detach, nic-attach, nic-detach,
 #        snap-create, snap-delete"
 #]
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#  Hybrid OpenNebula Virtualization Driver Manager Configuration
+#    -r number of retries when monitoring a host
+#    -t number of threads, i.e. number of actions performed at the same time
+#-------------------------------------------------------------------------------
+# VM_MAD = [
+#     NAME           = "one",
+#     SUNSTONE_NAME  = "OpenNebula",
+#     EXECUTABLE     = "one_vmm_sh",
+#     ARGUMENTS      = "-t 15 -r 0 one",
+#     TYPE           = "xml",
+#     KEEP_SNAPSHOTS = "no",
+#     IMPORTED_VMS_ACTIONS = "terminate, terminate-hard, hold, release, suspend,
+#         resume, delete, reboot, reboot-hard, resched, unresched, poweroff,
+#         poweroff-hard"
+# ]
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
@@ -711,7 +754,7 @@ DATASTORE_MAD = [
 
 MARKET_MAD = [
     EXECUTABLE = "one_market",
-    ARGUMENTS  = "-t 15 -m http,s3,one"
+    ARGUMENTS  = "-t 15 -m http,s3,one, linuxcontainers"
 ]
 
 #*******************************************************************************
@@ -797,6 +840,8 @@ IPAM_MAD = [
 #               - CREATE, when the Host is created (onehost create)
 #               - ERROR, when the Host enters the error state
 #               - DISABLE, when the Host is disabled
+#               - ENABLE, when the Host is enabled
+#               - OFFLINE, when the Host is offline
 #   command   : path is relative to $ONE_LOCATION/var/remotes/hook
 #               (self-contained) or to /var/lib/one/remotes/hook (system-wide).
 #               That directory will be copied on the hosts under
@@ -1006,6 +1051,57 @@ VM_MANAGE_OPERATIONS = "undeploy, hold, release, stop, suspend, resume, reboot,
     snapshot, updateconf, rename, resize, update, disk-saveas"
 
 VM_USE_OPERATIONS    = ""
+
+#*******************************************************************************
+# Default Permissions for VDC ACL rules
+#*******************************************************************************
+# Default ACL rules created when resource is added to a VDC. The following
+# attributes configures the permissions granted to the VDC group for each
+# resource types:
+#   DEFAULT_VDC_HOST_ACL: permissions granted on hosts added to a VDC.
+#   DEFAULT_VDC_NET_ACL: permissions granted on vnets added to a VDC.
+#   DEFAULT_VDC_DATASTORE_ACL: permissions granted on datastores to a VDC.
+#
+#   DEFAULT_VDC_CLUSTER_HOST_ACL: permissions granted to cluster hosts when a
+#   cluster is added to the VDC.
+#   DEFAULT_VDC_CLUSTER_NET_ACL: permissions granted to cluster vnets when a
+#   cluster is added to the VDC.
+#   DEFAULT_VDC_CLUSTER_DATASTORE_ACL: permissions granted to cluster datastores
+#   when a cluster is added to the VDC.
+#
+# When defining the permissions you can use "" or "-" to not add any rule to
+# that specific resource. Also you can combine several permissions with "+",
+# for exampl "MANAGE+USE". Valid permissions are USE, MANAGE or ADMIN.
+#
+# Example:
+# DEFAULT_VDC_HOST_ACL      = "MANAGE"
+# Adds @<gid> HOST/#<hid> MANAGE #<zid> when a host is added to the VDC,
+# eg. onevdc addhost <vdc> <zid> <hid>
+#
+# DEFAULT_VDC_VNET_ACL       = "USE"
+# Adds @<gid> NET/#<vnetid> USE #<zid> when a vnet is added to the VDC,
+# eg. onevdc addvnet <vdc> <zid> <vnetid>
+#
+# DEFAULT_VDC_DATASTORE_ACL = "USE"
+# Adds @<gid> DATASTORE/#<dsid> USE #<zid> when a vnet is added to the VDC,
+# eg. onevdc adddatastore <vdc> <zid> <dsid>
+#
+# DEFAULT_VDC_CLUSTER_HOST_ACL      = "MANAGE"
+# DEFAULT_VDC_CLUSTER_NET_ACL       = "USE"
+# DEFAULT_VDC_CLUSTER_DATASTORE_ACL = "USE"
+# Adds:
+#   @<gid> HOST/%<cid> MANAGE #<zid>
+#   @<gid> DATASTORE+NET/%<cid> USE #<zid>
+# when a cluster is added to the VDC, e.g. onevdc addcluster <vdc> <zid> <cid>
+#*******************************************************************************
+
+DEFAULT_VDC_HOST_ACL      = "MANAGE"
+DEFAULT_VDC_VNET_ACL      = "USE"
+DEFAULT_VDC_DATASTORE_ACL = "USE"
+
+DEFAULT_VDC_CLUSTER_HOST_ACL      = "MANAGE"
+DEFAULT_VDC_CLUSTER_NET_ACL       = "USE"
+DEFAULT_VDC_CLUSTER_DATASTORE_ACL = "USE"
 
 #*******************************************************************************
 # Restricted Attributes Configuration
