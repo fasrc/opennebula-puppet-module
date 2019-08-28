@@ -245,11 +245,14 @@ DEFAULT_COST = [
 #     %m -- method name
 #     %u -- user id
 #     %U -- user name
-#     %l -- param list
+#     %l[number] -- param list and number of characters (optional) to print
+#                   each parameter, default is 20. Example: %l300
 #     %p -- user password
 #     %g -- group id
 #     %G -- group name
 #     %a -- auth token
+#     %A -- client IP address (only IPv4 supported)
+#     %P -- client TCP port
 #     %% -- %
 #*******************************************************************************
 
@@ -260,7 +263,7 @@ KEEPALIVE_MAX_CONN = <%= scope.lookupvar('one::xmlrpc_keepalive_max_conn') %>
 TIMEOUT            = <%= scope.lookupvar('one::xmlrpc_timeout') %>
 #RPC_LOG            = NO
 #MESSAGE_SIZE       = 1073741824
-#LOG_CALL_FORMAT    = "Req:%i UID:%u %m invoked %l"
+#LOG_CALL_FORMAT    = "Req:%i UID:%u IP:%A %m invoked %l20"
 
 #*******************************************************************************
 # Physical Networks configuration
@@ -375,7 +378,7 @@ DEFAULT_IMAGE_TYPE           = "<%= scope.lookupvar('one::default_image_type') %
 #    -f  Interval in seconds to flush collected information (default 5)
 #    -t  Number of threads for the server (default 50)
 #    -i  Time in seconds of the monitorization push cycle. This parameter must
-#        be smaller than MONITORING_INTERVAL, otherwise push monitorization will
+#        be smaller than MONITORING_INTERVAL_HOST, otherwise push monitorization will
 #        not be effective.
 #    -w  Timeout in seconds to execute external commands (default unlimited)
 #-------------------------------------------------------------------------------
