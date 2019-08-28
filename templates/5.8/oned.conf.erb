@@ -1198,12 +1198,21 @@ VNET_RESTRICTED_ATTR = "VLAN_ID"
 VNET_RESTRICTED_ATTR = "BRIDGE"
 VNET_RESTRICTED_ATTR = "CONF"
 VNET_RESTRICTED_ATTR = "BRIDGE_CONF"
+VNET_RESTRICTED_ATTR = "OVS_BRIDGE_CONF"
 VNET_RESTRICTED_ATTR = "IP_LINK_CONF"
+VNET_RESTRICTED_ATTR = "FILTER_IP_SPOOFING"
+VNET_RESTRICTED_ATTR = "FILTER_MAC_SPOOFING"
 
 VNET_RESTRICTED_ATTR = "AR/VN_MAD"
 VNET_RESTRICTED_ATTR = "AR/PHYDEV"
 VNET_RESTRICTED_ATTR = "AR/VLAN_ID"
 VNET_RESTRICTED_ATTR = "AR/BRIDGE"
+VNET_RESTRICTED_ATTR = "AR/FILTER_IP_SPOOFING"
+VNET_RESTRICTED_ATTR = "AR/FILTER_MAC_SPOOFING"
+
+VNET_RESTRICTED_ATTR = "CLUSTER_IDS"
+
+VNET_RESTRICTED_ATTR = "EXTERNAL"
 
 #*******************************************************************************
 # Inherited Attributes Configuration
@@ -1276,7 +1285,9 @@ INHERIT_VNET_ATTR       = "OUTBOUND_PEAK_BW"
 INHERIT_VNET_ATTR       = "OUTBOUND_PEAK_KB"
 INHERIT_VNET_ATTR       = "CONF"
 INHERIT_VNET_ATTR       = "BRIDGE_CONF"
+INHERIT_VNET_ATTR       = "OVS_BRIDGE_CONF"
 INHERIT_VNET_ATTR       = "IP_LINK_CONF"
+INHERIT_VNET_ATTR       = "EXTERNAL"
 
 INHERIT_VNET_ATTR       = "VCENTER_NET_REF"
 INHERIT_VNET_ATTR       = "VCENTER_SWITCH_NAME"
@@ -1307,7 +1318,20 @@ INHERIT_VNET_ATTR       = "VCENTER_INSTANCE_ID"
 #            among the different hosts or not. Valid values: "yes" or "no"
 #   ds_migrate : The driver allows migrations across datastores. Valid values:
 #               "yes" or "no". Note: THIS ONLY APPLIES TO SYSTEM DS.
-#   allow_orphans: Snapshots can live without parents
+#   allow_orphans: Snapshots can live without parents. Suported values:
+#        YES: Children can be orphan (no parent snapshot)
+#         |- snap_1
+#         |- snap_2
+#         |- snap_3
+#        NO: New snapshots are set active and child of the previous one
+#         |- snap_1
+#            |- snap_2
+#               |- snap_3
+#        MIXED: Snapshots are children of last snapshot reverted to
+#         |- snap_1 (<--- revert)
+#            |- snap_3
+#            |- snap_4
+#         |- snap_2
 #*******************************************************************************
 
 TM_MAD_CONF = [
@@ -1321,7 +1345,8 @@ TM_MAD_CONF = [
 
 TM_MAD_CONF = [
     NAME = "shared", LN_TARGET = "NONE", CLONE_TARGET = "SYSTEM", SHARED = "YES",
-    DS_MIGRATE = "YES"
+    DS_MIGRATE = "YES", TM_MAD_SYSTEM = "ssh", LN_TARGET_SSH = "SYSTEM",
+    CLONE_TARGET_SSH = "SYSTEM", DISK_TYPE_SSH = "FILE"
 ]
 
 TM_MAD_CONF = [
@@ -1341,7 +1366,10 @@ TM_MAD_CONF = [
 
 TM_MAD_CONF = [
     NAME = "ceph", LN_TARGET = "NONE", CLONE_TARGET = "SELF", SHARED = "YES",
-    DS_MIGRATE = "NO", DRIVER = "raw", ALLOW_ORPHANS="yes"
+    DS_MIGRATE = "NO", DRIVER = "raw", ALLOW_ORPHANS="mixed",
+    TM_MAD_SYSTEM = "ssh,shared", LN_TARGET_SSH = "SYSTEM", CLONE_TARGET_SSH = "SYSTEM",
+    DISK_TYPE_SSH = "FILE", TM_MAD_SYSTEM = "shared", LN_TARGET_SHARED = "NONE",
+    CLONE_TARGET_SHARED = "SELF", DISK_TYPE_SHARED = "RBD"
 ]
 
 TM_MAD_CONF = [
@@ -1403,7 +1431,7 @@ DS_MAD_CONF = [
 
 DS_MAD_CONF = [
     NAME = "vcenter",
-    REQUIRED_ATTRS = "VCENTER_INSTANCE_ID, VCENTER_DS_REF, VCENTER_DC_REF",
+    REQUIRED_ATTRS = "VCENTER_INSTANCE_ID,VCENTER_DS_REF,VCENTER_DC_REF",
     PERSISTENT_ONLY = "NO",
     MARKETPLACE_ACTIONS = "export"
 ]
@@ -1445,6 +1473,14 @@ MARKET_MAD_CONF = [
     SUNSTONE_NAME = "Amazon S3",
     REQUIRED_ATTRS = "ACCESS_KEY_ID,SECRET_ACCESS_KEY,REGION,BUCKET",
     APP_ACTIONS = "create, delete, monitor"
+]
+
+MARKET_MAD_CONF = [
+    NAME = "linuxcontainers",
+    SUNSTONE_NAME = "LinuxContainers.org",
+    REQUIRED_ATTRS = "",
+    APP_ACTIONS = "monitor",
+    PUBLIC = "yes"
 ]
 
 #*******************************************************************************
@@ -1510,4 +1546,58 @@ AUTH_MAD_CONF = [
     PASSWORD_CHANGE = "NO",
     DRIVER_MANAGED_GROUPS = "NO",
     MAX_TOKEN_TIME = "-1"
+]
+
+#*******************************************************************************
+# Authentication Driver Behavior Definition
+#*******************************************************************************
+# The configuration for each driver is defined in VN_MAD_CONF. These
+# values must not be modified since they define the driver behavior.
+#   name        : name of the auth driver
+#   BRIDGE_TYPE : define the technology used by the driver
+#*******************************************************************************
+
+VN_MAD_CONF = [
+    NAME = "dummy",
+    BRIDGE_TYPE = "linux"
+]
+
+VN_MAD_CONF = [
+    NAME = "802.1Q",
+    BRIDGE_TYPE = "linux"
+]
+
+VN_MAD_CONF = [
+    NAME = "ebtables",
+    BRIDGE_TYPE = "linux"
+]
+
+VN_MAD_CONF = [
+    NAME = "fw",
+    BRIDGE_TYPE = "linux"
+]
+
+VN_MAD_CONF = [
+    NAME = "ovswitch",
+    BRIDGE_TYPE = "openvswitch"
+]
+
+VN_MAD_CONF = [
+    NAME = "vxlan",
+    BRIDGE_TYPE = "linux"
+]
+
+VN_MAD_CONF = [
+    NAME = "vcenter",
+    BRIDGE_TYPE = "vcenter_port_groups"
+]
+
+VN_MAD_CONF = [
+    NAME = "ovswitch_vxlan",
+    BRIDGE_TYPE = "openvswitch"
+]
+
+VN_MAD_CONF = [
+    NAME = "bridge",
+    BRIDGE_TYPE = "linux"
 ]
