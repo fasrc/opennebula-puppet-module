@@ -41,6 +41,7 @@
 #   user    : (mysql) user's MySQL login ID
 #   passwd  : (mysql) the password for user
 #   db_name : (mysql) the database name
+#   connections: (mysql) number of max. connections to mysql server
 #
 #  VNC_PORTS: VNC port pool for automatic VNC port assignment, if possible the
 #  port will be set to ``START`` + ``VMID``
@@ -64,9 +65,13 @@ LOG = [
   debug_level = <%= @debug_level %>
 ]
 
-#MANAGER_TIMER = 30
+#MANAGER_TIMER = 15
 
-MONITORING_INTERVAL = <%= scope.lookupvar('one::monitoring_interval') %>
+MONITORING_INTERVAL_HOST      = <%= scope.lookupvar('one::monitoring_interval_host') %>
+MONITORING_INTERVAL_VM        = <%= scope.lookupvar('one::monitoring_interval_vm') %>
+MONITORING_INTERVAL_DATASTORE = <%= scope.lookupvar('one::monitoring_interval_datastore') %>
+MONITORING_INTERVAL_MARKET    = <%= scope.lookupvar('one::monitoring_interval_market') %>
+
 MONITORING_THREADS  = <%= scope.lookupvar('one::monitoring_threads') %>
 
 #HOST_PER_INTERVAL               = 15
@@ -93,7 +98,8 @@ DB = [ BACKEND = "mysql",
     PORT    = 3306,
     USER    = "<%= scope.lookupvar('one::oned_db_user') %>",
     PASSWD  = "<%= scope.lookupvar('one::oned_db_password') %>",
-    DB_NAME = "<%= scope.lookupvar('one::oned_db') %>" ]
+    DB_NAME = "<%= scope.lookupvar('one::oned_db') %>"
+    CONNECTIONS = 50 ]
 <% end -%>
 
 
