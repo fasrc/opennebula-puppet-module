@@ -198,7 +198,11 @@
 #
 # ===== OpenNebula host monitoring configuration
 # $monitoring_interval - default 60
-#   when shoudl monitoring start again in seconds
+# $monitoring_interval_host - default 180
+# $monitoring_interval_vm - default 180
+# $monitoring_interval_datastore - default 300
+# $monitoring_interval_market - default 600
+#   when should monitoring start again in seconds
 #
 # $monitoring_threads - default 50
 #   how many monitoring threads should be started
@@ -405,6 +409,10 @@ class one (
   $oneuid                         = $one::params::oneuid,
   $onegid                         = $one::params::onegid,
   $monitoring_interval            = $one::params::monitoring_interval,
+  $monitoring_interval_host       = $one::params::monitoring_interval_host,
+  $monitoring_interval_vm         = $one::params::monitoring_interval_vm,
+  $monitoring_interval_datastore  = $one::params::monitoring_interval_datastore,
+  $monitoring_interval_market     = $one::params::monitoring_interval_market,
   $monitoring_threads             = $one::params::monitoring_threads,
   $information_collector_interval = $one::params::information_collector_interval,
   $http_proxy                     = $one::params::http_proxy,
