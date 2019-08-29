@@ -8,6 +8,7 @@ link_logo:
 text_link_logo:
 confirm_vms: false
 filter-view: true
+do_count_animation: true
 enabled_tabs:
     - dashboard-tab
     - instances-top-tab
@@ -28,6 +29,7 @@ enabled_tabs:
 <% end -%>
     - network-top-tab
     - vnets-tab
+    - vnets-templates-tab
     - vnets-topology-tab
     - secgroups-tab
     - infrastructure-top-tab
@@ -53,12 +55,10 @@ features:
     # on the VM creation dialog
     secgroups: true
 
-    # True to hide the CPU setting in the VM creation dialog. The CPU setting
-    # will be set to the same value as VCPU, that will still be visible for the
-    # end users
+    # True to hide the CPU setting in the VM creation dialog
     instantiate_hide_cpu: false
 
-    # False to not scale the CPU. Number [0, 1] to scale from VCPU
+    # False to not scale the CPU. Number to scale from VCPU
     instantiate_cpu_factor: false
 
     # True to show the option to make an instance persistent
@@ -76,9 +76,35 @@ features:
     # True to show the host datatable to instantiate VM
     show_host_instantiate: true
 
+    # True to show context section to instantiate Network
+    show_context_instantiate_vnet: true
+
+    # True to show context section to instantiate Network
+    show_security_instantiate_vnet: true
+
     # True to show an input to specify the the VMs and Template path/folder where a vCenter VM will
     # deployed to
     vcenter_vm_folder: false
+
+    # True to show the monitoring info (VM & VRouters)
+    show_monitoring_info: true
+
+    # True to show the attributes info (VM & VRouters)
+    show_attributes_info: true
+
+    # True to show the user datatable to instantiate VM
+    show_as_uid_instantiate: true
+
+    # True to show the group datatable to instantiate VM
+    show_as_gid_instantiate: true
+
+    # If it is set to true, the host capacity will be checked. This will only affect oneadmin requests,
+    # regular users resize requests will always be enforced
+    resize_enforce: false
+
+    deploy_enforce: false
+
+    migrate_enforce: false
 tabs:
     dashboard-tab:
         # The following widgets can be used inside any of the '_per_row' settings
