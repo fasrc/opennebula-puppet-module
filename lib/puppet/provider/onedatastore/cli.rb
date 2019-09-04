@@ -29,7 +29,8 @@ Puppet::Type.type(:onedatastore).provide(:cli) do
 
   def self.get_attributes
     get_checked_attributes + [:safe_dirs, :driver, :bridge_list,
-     :ceph_host, :ceph_user, :ceph_secret, :pool_name, :staging_dir, :base_path,
+     :ceph_host, :ceph_user, :ceph_secret, :ceph_conf, :ceph_key,
+     :pool_name, :ec_pool_name, :staging_dir, :base_path,
      :ensure, :cluster, :cluster_id]
   end
 
