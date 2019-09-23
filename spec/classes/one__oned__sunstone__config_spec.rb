@@ -63,6 +63,7 @@ describe 'sunstone_views template on 4.12' do
   before(:each) do
     scope.stubs(:lookupvar).with('one::sunstone_logo_png').returns('undef')
     scope.stubs(:lookupvar).with('one::version_gte_4_14').returns(false)
+    scope.stubs(:lookupvar).with('one::version_gte_5_0').returns(false)
   end
 
   it 'with marketplace enabled' do
@@ -86,6 +87,7 @@ describe 'sunstone_views template on 4.14' do
   before(:each) do
     scope.stubs(:lookupvar).with('one::sunstone_logo_small_png').returns('undef')
     scope.stubs(:lookupvar).with('one::version_gte_4_14').returns(true)
+    scope.stubs(:lookupvar).with('one::version_gte_5_0').returns(false)
   end
 
   it 'with marketplace enabled' do
