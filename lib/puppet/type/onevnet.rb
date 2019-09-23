@@ -26,10 +26,11 @@ Puppet::Type.newtype(:onevnet) do
 
   newproperty(:model) do
     desc "Model of network - deprecated parameter. For opennebula 5.0 use vn_mad, for earlier versions this parameter is unused"
+    newvalues(:vlan, :ebtables, :ovswitch, :vmware, :dummy)
     validate do |value|
       Puppet.deprecation_warning("Specifying model on onevnet is deprecated and unused. For opennebula 5.0 use vn_mad, for earlier versions this parameter is unused")
+      super(value)
     end
-    newvalues(:vlan, :ebtables, :ovswitch, :vmware, :dummy)
   end
 
   newproperty(:vn_mad) do
