@@ -70,6 +70,10 @@ Puppet::Type.newtype(:onedatastore) do
     desc 'List of frontend hosts, space separated, for Ceph'
   end
 
+  newproperty(:ceph_conf) do
+    desc 'Path to ceph config to use for this datastore'
+  end
+
   newproperty(:ceph_host) do
     desc 'List of Ceph monitors, space separated'
   end
@@ -78,12 +82,20 @@ Puppet::Type.newtype(:onedatastore) do
     desc 'The OpenNebula Ceph user name. If set it is used by RBD commands'
   end
 
+  newproperty(:ceph_key) do
+    desc 'Key file for user, if not set default locations are used'
+  end
+
   newproperty(:ceph_secret) do
     desc 'A generated UUID for a LibVirt secret (to hold the CephX authentication key in Libvirt on each hypervisor)'
   end
 
   newproperty(:pool_name) do
     desc 'The OpenNebula Ceph pool name (defaults to one)'
+  end
+
+  newproperty(:ec_pool_name) do
+    desc 'Name of Ceph erasure coded pool'
   end
 
   newproperty(:staging_dir) do

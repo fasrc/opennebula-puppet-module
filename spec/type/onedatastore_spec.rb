@@ -80,6 +80,21 @@ describe res_type do
     @datastore[:ceph_secret].should == 'cephsecret'
   end
 
+  it 'should have property :ceph_conf' do
+    @datastore[:ceph_conf] = '/etc/ceph/somecluster.conf'
+    @datastore[:ceph_conf].should == '/etc/ceph/somecluster.conf'
+  end
+
+  it 'should have property :ceph_key' do
+    @datastore[:ceph_key] = '/opt/custom/somecluster.client.admin.keyring'
+    @datastore[:ceph_key].should == '/opt/custom/somecluster.client.admin.keyring'
+  end
+
+  it 'should have property :ec_pool_name' do
+    @datastore[:ec_pool_name] = 'my_ec_pool'
+    @datastore[:ec_pool_name].should == 'my_ec_pool'
+  end
+
   it 'should have property :poolname' do
     @datastore[:pool_name] = 'poolname'
     @datastore[:pool_name].should == 'poolname'
