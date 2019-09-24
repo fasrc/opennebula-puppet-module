@@ -29,7 +29,7 @@ class one::oned::sunstone::config (
   $vnc_proxy_ipv6          = $one::vnc_proxy_ipv6,
   $sunstone_logo_png       = $one::sunstone_logo_png,
   $sunstone_logo_small_png = $one::sunstone_logo_small_png,
-){
+) inherits one {
 
   File {
     owner   => 'root',
@@ -60,11 +60,15 @@ class one::oned::sunstone::config (
     ensure  => file,
     mode    => '0640',
     content => template("one/${::one::template_path}/sunstone-views-user.yaml.erb"),
-  } ->
-  file {'/etc/one/sunstone-views/cloud.yaml':
-    ensure  => file,
-    mode    => '0640',
-    content => template("one/${::one::template_path}/sunstone-views-cloud.yaml.erb"),
+  }
+
+  if $one::version_gte_5_0 {
+    file {'/etc/one/sunstone-views/cloud.yaml':
+      ensure  => file,
+      mode    => '0640',
+      content => template("one/${::one::template_path}/sunstone-views-cloud.yaml.erb"),
+      require => File['/etc/one/sunstone-views/user.yaml'],
+    }
   }
 
   if $sunstone_logo_png != 'undef' or $sunstone_logo_small_png != 'undef' {

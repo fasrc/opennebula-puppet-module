@@ -63,17 +63,18 @@ describe 'sunstone_views template on 4.12' do
   before(:each) do
     scope.stubs(:lookupvar).with('one::sunstone_logo_png').returns('undef')
     scope.stubs(:lookupvar).with('one::version_gte_4_14').returns(false)
+    scope.stubs(:lookupvar).with('one::version_gte_5_0').returns(false)
   end
 
   it 'with marketplace enabled' do
-    harness = TemplateHarness.new('spec/../templates/sunstone-views.yaml.erb', scope)
+    harness = TemplateHarness.new('spec/../templates/unversioned/sunstone-views.yaml.erb', scope)
     harness.set('@enable_marketplace', 'yes')
     result = harness.run
     expect(result).to include("- marketplace-tab")
   end
 
   it 'with marketplace disabled' do
-    harness = TemplateHarness.new('spec/../templates/sunstone-views.yaml.erb', scope)
+    harness = TemplateHarness.new('spec/../templates/unversioned/sunstone-views.yaml.erb', scope)
     harness.set('@enable_marketplace', 'no')
     result = harness.run
     expect(result).to_not include("- marketplace-tab")
@@ -86,17 +87,18 @@ describe 'sunstone_views template on 4.14' do
   before(:each) do
     scope.stubs(:lookupvar).with('one::sunstone_logo_small_png').returns('undef')
     scope.stubs(:lookupvar).with('one::version_gte_4_14').returns(true)
+    scope.stubs(:lookupvar).with('one::version_gte_5_0').returns(false)
   end
 
   it 'with marketplace enabled' do
-    harness = TemplateHarness.new('spec/../templates/4.14/sunstone-views-admin.yaml.erb', scope)
+    harness = TemplateHarness.new('spec/../templates/unversioned/sunstone-views-admin.yaml.erb', scope)
     harness.set('@enable_marketplace', 'yes')
     result = harness.run
     expect(result).to include("- marketplace-tab")
   end
 
   it 'with marketplace disabled' do
-    harness = TemplateHarness.new('spec/../templates/4.14/sunstone-views-admin.yaml.erb', scope)
+    harness = TemplateHarness.new('spec/../templates/unversioned/sunstone-views-admin.yaml.erb', scope)
     harness.set('@enable_marketplace', 'no')
     result = harness.run
     expect(result).to_not include("- marketplace-tab")
