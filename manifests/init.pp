@@ -198,6 +198,8 @@
 #
 # ===== OpenNebula host monitoring configuration
 # $monitoring_interval - default 60
+#
+# ===== These options are for OpenNebula >= 5.8
 # $monitoring_interval_host - default 180
 # $monitoring_interval_vm - default 180
 # $monitoring_interval_datastore - default 300
