@@ -31,10 +31,9 @@ class one::oned::sunstone::config (
   $sunstone_logo_small_png = $one::sunstone_logo_small_png,
 ) inherits one {
 
-  $sunstone_views_root = '/etc/one/sunstone-views'
-
-  if $version_gte_5_8 = true {
-    $sunstone_views_root = $sunstone_views_root/mixed
+  $sunstone_views_root = $one::version_gte_5_8 ? {
+    true    => '/etc/one/sunstone-views/mixed',
+    default => '/etc/one/sunstone-views',
   }
 
   File {
