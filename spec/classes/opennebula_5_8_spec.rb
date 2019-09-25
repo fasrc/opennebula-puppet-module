@@ -22,7 +22,6 @@ describe 'one', :type => :class do
         it { should contain_file(oned_config).with_content(/^MONITORING_INTERVAL_MARKET\s+= 600/m) }
         it { should contain_file('/etc/one/sunstone-views/mixed/admin.yaml').with_ensure('file') }
         it { should contain_file('/etc/one/sunstone-views/mixed/cloud.yaml').with_ensure('file') }
-        it { should contain_file('/etc/one/sunstone-views/mixed/groupadmin.yaml').with_ensure('file') }
         it { should contain_file('/etc/one/sunstone-views/mixed/user.yaml').with_ensure('file') }
       end
       context 'as oned-5.8 with custom params' do
