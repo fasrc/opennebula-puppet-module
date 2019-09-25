@@ -84,7 +84,7 @@ features:
 
     # True to show an input to specify the the VMs and Template path/folder where a vCenter VM will
     # deployed to
-    vcenter_vm_folder: false
+    vcenter_vm_folder: true
 
     # True to show the monitoring info (VM & VRouters)
     show_monitoring_info: true
@@ -251,7 +251,7 @@ tabs:
         actions:
             Template.refresh: true
             Template.create_dialog: true
-            Template.import_dialog: false
+            Template.import_dialog: true
             Template.update_dialog: true
             Template.instantiate_vms: true
             Template.rename: true
@@ -497,6 +497,8 @@ tabs:
             VirtualRouter.delete: true
             VirtualRouter.attachnic: true
             VirtualRouter.detachnic: true
+            VirtualRouter.lockU: true
+            VirtualRouter.unlock: true
             VirtualRouter.edit_labels: true
             VirtualRouter.menu_labels: true
     infrastructure-top-tab:
@@ -602,7 +604,7 @@ tabs:
         actions:
             Datastore.refresh: true
             Datastore.create_dialog: true
-            Datastore.import_dialog: false
+            Datastore.import_dialog: true
             Datastore.addtocluster: true
             Datastore.rename: true
             Datastore.chown: true
@@ -637,7 +639,7 @@ tabs:
         actions:
             Image.refresh: true
             Image.create_dialog: true
-            Image.import_dialog: false
+            Image.import_dialog: true
             Image.upload_marketplace_dialog: true
             Image.rename: true
             Image.chown: true
@@ -772,7 +774,8 @@ tabs:
         actions:
             Network.refresh: true
             Network.create_dialog: true
-            Network.import_dialog: false
+            Network.instantiate_dialog: true
+            Network.import_dialog: true
             Network.update_dialog: true
             Network.reserve_dialog: true
             Network.addtocluster: true
