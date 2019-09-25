@@ -547,6 +547,14 @@ class one (
     $version_gte_5_0 = false
   }
 
+  # check if version greater than or equal to 5.8 (used in templates)
+  if ( versioncmp($one_version, '5.8') >= 0 ) {
+    $version_gte_5_8 = true
+  }
+  else {
+    $version_gte_5_8 = false
+  }
+
   # for some things we only need X.Y not X.Y.Z so trim off any extra points
   $one_version_array = split($one_version,'[.]')
   $one_version_short = "${one_version_array[0]}.${one_version_array[1]}"
