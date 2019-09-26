@@ -31,6 +31,11 @@ class one::oned::sunstone::config (
   $sunstone_logo_small_png = $one::sunstone_logo_small_png,
 ) inherits one {
 
+  $sunstone_views_root = $one::version_gte_5_8 ? {
+    true    => '/etc/one/sunstone-views/mixed',
+    default => '/etc/one/sunstone-views',
+  }
+
   File {
     owner   => 'root',
     group   => 'oneadmin',
@@ -51,23 +56,23 @@ class one::oned::sunstone::config (
     mode    => '0640',
     content => template("one/${::one::template_path}/sunstone-views.yaml.erb"),
   } ->
-  file { '/etc/one/sunstone-views/admin.yaml':
+  file { "${sunstone_views_root}/admin.yaml":
     ensure  => file,
     mode    => '0640',
     content => template("one/${::one::template_path}/sunstone-views-admin.yaml.erb"),
   } ->
-  file { '/etc/one/sunstone-views/user.yaml':
+  file { "${sunstone_views_root}/user.yaml":
     ensure  => file,
     mode    => '0640',
     content => template("one/${::one::template_path}/sunstone-views-user.yaml.erb"),
   }
 
   if $one::version_gte_5_0 {
-    file {'/etc/one/sunstone-views/cloud.yaml':
+    file {"${sunstone_views_root}/cloud.yaml":
       ensure  => file,
       mode    => '0640',
       content => template("one/${::one::template_path}/sunstone-views-cloud.yaml.erb"),
-      require => File['/etc/one/sunstone-views/user.yaml'],
+      require => File["${sunstone_views_root}/user.yaml"],
     }
   }
 

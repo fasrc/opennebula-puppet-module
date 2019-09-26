@@ -198,7 +198,13 @@
 #
 # ===== OpenNebula host monitoring configuration
 # $monitoring_interval - default 60
-#   when shoudl monitoring start again in seconds
+#
+# ===== These options are for OpenNebula >= 5.8
+# $monitoring_interval_host - default 180
+# $monitoring_interval_vm - default 180
+# $monitoring_interval_datastore - default 300
+# $monitoring_interval_market - default 600
+#   when should monitoring start again in seconds
 #
 # $monitoring_threads - default 50
 #   how many monitoring threads should be started
@@ -405,6 +411,10 @@ class one (
   $oneuid                         = $one::params::oneuid,
   $onegid                         = $one::params::onegid,
   $monitoring_interval            = $one::params::monitoring_interval,
+  $monitoring_interval_host       = $one::params::monitoring_interval_host,
+  $monitoring_interval_vm         = $one::params::monitoring_interval_vm,
+  $monitoring_interval_datastore  = $one::params::monitoring_interval_datastore,
+  $monitoring_interval_market     = $one::params::monitoring_interval_market,
   $monitoring_threads             = $one::params::monitoring_threads,
   $information_collector_interval = $one::params::information_collector_interval,
   $http_proxy                     = $one::params::http_proxy,
@@ -537,6 +547,14 @@ class one (
     $version_gte_5_0 = false
   }
 
+  # check if version greater than or equal to 5.8 (used in templates)
+  if ( versioncmp($one_version, '5.8') >= 0 ) {
+    $version_gte_5_8 = true
+  }
+  else {
+    $version_gte_5_8 = false
+  }
+
   # for some things we only need X.Y not X.Y.Z so trim off any extra points
   $one_version_array = split($one_version,'[.]')
   $one_version_short = "${one_version_array[0]}.${one_version_array[1]}"
@@ -548,6 +566,7 @@ class one (
     '5.0' => '5.0',
     '5.2' => '5.2',
     '5.4' => '5.4',
+    '5.8' => '5.8',
   }
 
   if member(keys($templated_versions_mapping), $one_version_short) {

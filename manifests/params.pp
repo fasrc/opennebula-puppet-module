@@ -105,6 +105,10 @@ class one::params {
 
   # OpenNebula monitoring parameters
   $monitoring_interval = hiera('one::oned::monitoring_interval', '60')
+  $monitoring_interval_host = hiera('one::oned::monitoring_interval_host', '180')
+  $monitoring_interval_vm = hiera('one::oned::monitoring_interval_vm', '180')
+  $monitoring_interval_datastore = hiera('one::oned::monitoring_interval_datastore', '300')
+  $monitoring_interval_market = hiera('one::oned::monitoring_interval_market', '600')
   $monitoring_threads  = hiera('one::oned::monitoring_threads', '50')
   $information_collector_interval = hiera('one::oned::information_collector_interval', '20')
 
