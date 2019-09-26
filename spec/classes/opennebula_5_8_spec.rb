@@ -14,6 +14,7 @@ describe 'one', :type => :class do
         let(:params) { {
             :oned => true,
             :one_version => '5.8',
+            :sunstone => true,
             :node => false,
         } }
         it { should contain_file(oned_config).with_content(/^MONITORING_INTERVAL_HOST\s+= 180/m) }
