@@ -98,7 +98,7 @@ DB = [ BACKEND = "mysql",
     PORT    = 3306,
     USER    = "<%= scope.lookupvar('one::oned_db_user') %>",
     PASSWD  = "<%= scope.lookupvar('one::oned_db_password') %>",
-    DB_NAME = "<%= scope.lookupvar('one::oned_db') %>"
+    DB_NAME = "<%= scope.lookupvar('one::oned_db') %>",
     CONNECTIONS = 50 ]
 <% end -%>
 
