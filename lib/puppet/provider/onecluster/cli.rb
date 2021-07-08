@@ -116,8 +116,10 @@ Puppet::Type.type(:onecluster).provide(:cli) do
   end
   def vnets=(value)
     vnets = @property_hash[:vnets] || []
-    (vnets - value).each do |vnet|
-      onecluster('delvnet', resource[:name], vnet)
+    if @property_hash[:purge_vnets]
+      (vnets - value).each do |vnet|
+        onecluster('delvnet', resource[:name], vnet)
+      end
     end
     (value - vnets).each do |vnet|
       onecluster('addvnet', resource[:name], vnet)

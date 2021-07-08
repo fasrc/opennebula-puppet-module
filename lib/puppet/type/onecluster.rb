@@ -40,6 +40,12 @@ Puppet::Type.newtype(:onecluster) do
     end
   end
 
+  newproperty(:purge_vnets, :boolean => true) do
+    desc "should extraneous Virtual Networks in the cluster be removed - default true"
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
   newproperty(:datastores, :array_matching => :all) do
     desc "Datastores to add to the cluster - optional"
     defaultto []
